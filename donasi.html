@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Donasi Islami - Login</title>
+    <style>
+        :root { --bg-color: #f4f7f5; --card-bg: #ffffff; --primary: #0e7c4a; --primary-dark: #0a5f39; --text-light: #1e293b; --text-muted: #64748b; --border-color: #e2e8f0; --input-bg: #f8fafc; --gold: #f59e0b; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-light); display: flex; justify-content: center; min-height: 100vh; padding: 12px; }
+    .app-container { width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 14px; }
+    .login-screen { display: flex; flex-direction: column; gap: 14px; justify-content: center; min-height: 100vh; padding-bottom: 40px; }
+    .login-logo { text-align: center; margin-bottom: 8px; }
+    .login-logo h1 { font-size: 24px; color: var(--primary); margin-bottom: 6px; }
+    .login-logo p { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+    .login-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 18px; padding: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .login-card.section-title { font-size: 14px; font-weight: bold; color: var(--primary); margin-bottom: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; text-align: center; }
+    .header-card { background: linear-gradient(135deg, #0e7c4a 0%, #12a55e 100%); border-radius: 18px; padding: 18px; text-align: center; box-shadow: 0 6px 16px rgba(14,124,74,0.25); color: #fff; }
+    .header-card h1 { font-size: 18px; color: #fff; margin-bottom: 4px; }
+    .header-card p { font-size: 12px; color: #d1fae5; }
+    .stats-row { display: flex; gap: 8px; margin-top: 12px; }
+    .stat-box { flex: 1; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 8px; }
+    .stat-box b { display: block; color: #fff; font-size: 14px; }
+    .stat-box span { font-size: 10px; color: #d1fae5; }
+    .nav-tabs { display: flex; background: #fff; border: 1px solid var(--border-color); border-radius: 12px; padding: 4px; gap: 4px; }
+    .tab-btn { flex: 1; padding: 10px 0; background: transparent; border: none; color: var(--text-muted); font-size: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; }
+    .tab-btn.active { background: var(--primary); color: #fff; }
+    .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .section-title { font-size: 14px; font-weight: bold; color: var(--primary); margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
+    .rekening-box { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; margin-bottom: 12px; }
+    .rekening-item { display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 8px; }
+    .rekening-item:last-child { margin-bottom: 0; }
+    .rekening-num { font-weight: bold; color: var(--primary); font-family: monospace; font-size: 14px; }
+    .btn-copy { background: var(--primary); color: #fff; border: none; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: bold; cursor: pointer; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+    .form-group label { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+    .form-control { padding: 12px; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; color: #1e293b; font-size: 13px; outline: none; }
+    .form-control:focus { border-color: var(--primary); background: #fff; }
+      textarea.form-control { resize: none; height: 60px; }
+    .btn-submit { width: 100%; padding: 12px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-weight: bold; font-size: 13px; cursor: pointer; margin-top: 6px; }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-link { background: none; border: none; color: var(--primary); font-size: 11px; cursor: pointer; text-decoration: underline; }
+    .auth-switch { display: flex; gap: 8px; margin-bottom: 14px; }
+    .auth-switch button { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-muted); font-size: 12px; font-weight: bold; cursor: pointer; }
+    .auth-switch button.active { background: var(--primary); color: #fff; }
+    .donatur-list { display: flex; flex-direction: column; gap: 10px; max-height: 400px; overflow-y: auto; }
+    .donatur-card { background: #fff; border: 1px solid var(--border-color); border-left: 3px solid var(--primary); border-radius: 10px; padding: 10px 12px; }
+    .donatur-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; margin-bottom: 4px; }
+    .donatur-nominal { color: var(--primary); }
+    .donatur-alamat { font-size: 10px; color: var(--text-muted); margin-bottom: 6px; }
+    .donatur-doa { font-size: 11px; font-style: italic; color: #334155; background: #f0fdf4; padding: 6px 8px; border-radius: 6px; margin-bottom: 8px; }
+    .donatur-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .btn-amin { background: #f0fdf4; color: var(--primary); border: 1px solid var(--border-color); padding: 5px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; }
+    .btn-hapus { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; padding: 5px 8px; border-radius: 6px; font-size: 10px; cursor: pointer; }
+    .btn-approve { background: var(--primary); color: #fff; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; font-weight: bold; }
+    .btn-tolak { background: #dc2626; color: #fff; border: none; padding: 5px 8px; border-radius: 6px; font-size: 11px; cursor: pointer; }
+    .badge { font-size: 9px; font-weight: bold; padding: 2px 6px; border-radius: 99px; }
+    .badge-pending { background: #fef3c7; color: #92400e; }
+    .badge-verified { background: #dcfce7; color: #166534; }
+    .menu-list { display: flex; flex-direction: column; gap: 8px; }
+    .menu-item { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; font-size: 13px; font-weight: 600; display: flex; justify-content: space-between; cursor: pointer; }
+    .sub-page { display: none; }.sub-page.active { display: block; }
+    .btn-back { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; margin-bottom: 12px; }
+    .tab-pane { display: none; }.tab-pane.active { display: block; }
+      #authMsg { font-size: 11px; color: #dc2626; margin-top: 6px; text-align: center; }
+    .hidden { display: none!important; }
+    .user-bar { display: flex; justify-content: space-between; align-items: center; background: #fff; border: 1px solid var(--border-color); border-radius: 10px; padding: 8px 12px; font-size: 12px; }
+    .btn-logout { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; padding: 6px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div id="loginScreen" class="login-screen">
+            <div class="login-logo">
+                <h1>🕌 Donasi Islami</h1>
+                <p>"Sedekah tidak akan mengurangi harta" (HR. Muslim)<br>Login dulu untuk masuk ke dashboard donasi</p>
+            </div>
+            <div class="login-card">
+                <div class="section-title">🔐 Masuk / Daftar Akun</div>
+                <div class="auth-switch">
+                    <button id="btnModeLogin" class="active" onclick="setAuthMode('login')">Masuk</button>
+                    <button id="btnModeDaftar" onclick="setAuthMode('daftar')">Daftar Akun</button>
+                </div>
+                <form onsubmit="handleAuth(event)">
+                    <div class="form-group" id="namaGroup" style="display:none;">
+                        <label>Nama Lengkap (Wajib untuk daftar)</label>
+                        <input type="text" id="authNama" class="form-control" placeholder="Contoh: Riskia" maxlength="50">
+                    </div>
+                    <div class="form-group"><label>Email</label><input type="email" id="authEmail" class="form-control" placeholder="Email" required></div>
+                    <div class="form-group"><label>Kata Sandi (min 6 karakter)</label><input type="password" id="authPassword" class="form-control" placeholder="password" required minlength="6"></div>
+                    <button type="submit" id="authSubmit" class="btn-submit">Masuk</button>
+                    <p id="authMsg"></p>
+                </form>
+                <div style="display:flex;justify-content:center;margin-top:10px;">
+                    <button class="btn-link" onclick="lupaPassword()">Lupa Password?</button>
+                </div>
+            </div>
+            <p style="text-align:center;font-size:10px;color:var(--text-muted);">Belum punya akun? Klik tombol Daftar Akun di atas.<br>Semua donasi tersimpan aman di Firebase.</p>
+        </div>
+
+        <div id="dashboardScreen" class="hidden" style="display:flex;flex-direction:column;gap:14px;">
+            <div class="user-bar">
+                <span id="userWelcome">Assalamu'alaikum</span>
+                <button class="btn-logout" onclick="logoutUser()">Keluar</button>
+            </div>
+            <div class="header-card">
+                <h1>Donasi & Infaq Perubahan</h1>
+                <p>"Sedekah tidak akan mengurangi harta" (HR. Muslim)</p>
+                <div class="stats-row">
+                    <div class="stat-box"><b id="statTotal">Rp 0</b><span>Total Terverifikasi</span></div>
+                    <div class="stat-box"><b id="statCount">0</b><span>Donatur Terverifikasi</span></div>
+                </div>
+                <p style="font-size:10px;color:#d1fae5;margin-top:8px;" id="statPending">Menunggu verifikasi: 0</p>
+            </div>
+            <div class="nav-tabs">
+                <button class="tab-btn active" onclick="switchNav('donasi', this)">Donasi</button>
+                <button class="tab-btn" onclick="switchNav('donatur', this)">Daftar Donatur</button>
+                <button class="tab-btn" onclick="switchNav('pengaturan', this)">Pengaturan</button>
+            </div>
+            <div id="tab-donasi" class="tab-pane active card">
+                <div class="section-title">💳 Rekening Resmi Admin</div>
+                <div class="rekening-box">
+                    <div class="rekening-item"><span>Admin Utama:</span><span><b>TITI KADI</b></span></div>
+                    <div class="rekening-item"><span>E-wallet Gopay:</span><span><span class="rekening-num">083871036094</span> <button class="btn-copy" onclick="copyRek('083871036094')">Salin</button></span></div>
+                    <div class="rekening-item"><span>Bank Sebank:</span><span><span class="rekening-num">901880954300</span> <button class="btn-copy" onclick="copyRek('901880954300')">Salin</button></span></div>
+                </div>
+                <div class="section-title">✍️ Konfirmasi & Formulir Donasi</div>
+                <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px;line-height:1.6;">⚠️ <b>Transfer dulu</b> ke rekening di atas, lalu isi form ini dan upload bukti transfer. Donasi baru masuk total setelah admin verifikasi.</p>
+                <form onsubmit="submitDonasi(event)">
+                    <div class="form-group"><label>Nama (dari akun)</label><input type="text" id="inputNama" class="form-control" placeholder="Riskia" readonly required></div>
+                    <div class="form-group"><label>Alamat / Kota Asal</label><input type="text" id="inputAlamat" class="form-control" placeholder="Contoh: Bengkulu" required maxlength="50"></div>
+                    <div class="form-group"><label>Jumlah Donasi (Rp) - Min Rp 10.000</label><input type="text" inputmode="numeric" id="inputNominal" class="form-control" placeholder="Contoh: 100.000" required oninput="formatRupiah(this)"></div>
+                    <div class="form-group"><label>Doa / Harapan / Hajat</label><textarea id="inputDoa" class="form-control" placeholder="Tuliskan doa..." required maxlength="200"></textarea></div>
+                    <div class="form-group"><label>Bukti Transfer (Foto Struk) - Wajib</label><input type="file" id="inputBukti" class="form-control" accept="image/*" required></div>
+                    <button type="submit" id="btnDonasi" class="btn-submit">Kirim Donasi & Aminkan Doa</button>
+                </form>
+            </div>
+            <div id="tab-donatur" class="tab-pane card">
+                <div class="section-title">🤲 Daftar Donatur Terverifikasi</div>
+                <div class="form-group"><input type="text" id="searchDonatur" class="form-control" placeholder="🔍 Cari nama / kota..." oninput="renderDonatur()"></div>
+                <div class="donatur-list" id="donaturContainer"><p style="text-align:center;color:var(--text-muted);font-size:12px;padding:20px;">Memuat data dari Firebase...</p></div>
+                <div id="adminPanel" class="hidden" style="margin-top:16px;border-top:1px solid var(--border-color);padding-top:12px;">
+                    <div class="section-title">🛡️ Panel Admin - Menunggu Verifikasi</div>
+                    <div class="donatur-list" id="pendingContainer"></div>
+                </div>
+            </div>
+            <div id="tab-pengaturan" class="tab-pane card">
+                <div id="page-main-settings">
+                    <div class="section-title">⚙️ Pengaturan Aplikasi</div>
+                    <div class="menu-list">
+                        <div class="menu-item" onclick="openSubPage('tentang')"><span>1. Tentang Donasi</span><span>➔</span></div>
+                        <div class="menu-item" onclick="openSubPage('lapor')"><span>2. Lapor Masalah</span><span>➔</span></div>
+                        <div class="menu-item" onclick="openSubPage('versi')"><span>3. Versi Aplikasi</span><span>➔</span></div>
+                    </div>
+                </div>
+                <div id="page-tentang" class="sub-page">
+                    <button class="btn-back" onclick="closeSubPage()">← Kembali</button>
+                    <div class="section-title">ℹ️ Tentang Donasi</div>
+                    <div style="background:var(--input-bg);border:1px solid var(--border-color);border-radius:12px;padding:14px;margin-bottom:12px;">
+                        <h3 style="font-size:14px;color:var(--primary);margin-bottom:6px;">🕌 Donasi & Infaq Perubahan</h3>
+                        <p style="font-size:12px;line-height:1.7;color:#334155;">Aplikasi ini dibuat untuk memudahkan kita semua menyalurkan infaq dan sedekah secara <b>aman, transparan, dan tepat sasaran</b>. Setiap rupiah yang Anda titipkan akan kami kelola dengan amanah.</p>
+                    </div>
+                    <div style="background:#f0fdf4;border:1px solid var(--border-color);border-radius:12px;padding:14px;margin-bottom:12px;">
+                        <h3 style="font-size:13px;color:var(--primary);margin-bottom:8px;">❤️ Kemana Donasi Anda Akan Pergi?</h3>
+                        <p style="font-size:12px;line-height:1.7;color:var(--text-muted);margin-bottom:8px;">Hasil dari donasi yang terkumpul akan kami gunakan untuk membantu banyak teman-teman kita yang membutuhkan, di antaranya:</p>
+                        <ul style="font-size:12px;line-height:1.8;color:#1e293b;padding-left:18px;list-style:none;">
+                            <li>👨‍👩‍👧 <b>Kaum Dhuafa & Kurang Mampu</b><br><span style="color:var(--text-muted)">Bantuan sembako, biaya sekolah anak yatim, dan modal usaha kecil untuk keluarga prasejahtera.</span></li>
+                            <li style="margin-top:8px;">🌊 <b>Korban Bencana Alam</b><br><span style="color:var(--text-muted)">Banjir, gempa, longsor, dan kebakaran. Kami salurkan bantuan darurat, tenda, obat-obatan, dan logistik.</span></li>
+                            <li style="margin-top:8px;">🏥 <b>Yang Sakit & Membutuhkan Pengobatan</b><br><span style="color:var(--text-muted)">Biaya berobat untuk mereka yang tidak punya BPJS atau dana lebih.</span></li>
+                            <li style="margin-top:8px;">🕌 <b>Pembangunan Masjid & Fasilitas Umat</b><br><span style="color:var(--text-muted)">Renovasi masjid, sumur wakaf, dan fasilitas umum di daerah terpencil.</span></li>
+                        </ul>
+                    </div>
+                    <div style="background:var(--input-bg);border:1px solid var(--border-color);border-radius:12px;padding:14px;margin-bottom:12px;">
+                        <h3 style="font-size:13px;color:var(--primary);margin-bottom:6px;">🎯 Kalau Donasi Sudah Cukup, Apa Yang Terjadi?</h3>
+                        <p style="font-size:12px;line-height:1.7;color:var(--text-muted);">Ketika total donasi sudah mencukupi target, kami akan <b>langsung salurkan</b> dalam bentuk:</p>
+                        <p style="font-size:12px;line-height:1.7;color:#1e293b;margin-top:6px;">✅ Paket sembako & makanan siap saji untuk warga terdampak<br>✅ Uang tunai / santunan untuk keluarga korban bencana<br>✅ Perlengkapan sekolah & biaya pendidikan anak kurang mampu<br>✅ Bantuan perbaikan rumah yang rusak</p>
+                        <p style="font-size:12px;line-height:1.7;color:var(--primary);margin-top:8px;">Insya Allah setiap donasi yang terkumpul akan kami laporkan di halaman Donatur, jadi semua bisa melihat dan ikut mendoakan.</p>
+                    </div>
+                    <div style="text-align:center;background:linear-gradient(135deg,#0e7c4a,#12a55e);border-radius:12px;padding:14px;">
+                        <p style="font-size:12px;font-style:italic;line-height:1.7;color:#fff;">"Perumpamaan orang yang menginfakkan hartanya di jalan Allah seperti sebutir biji yang menumbuhkan tujuh tangkai, pada setiap tangkai ada seratus biji."<br><span style="color:#fef3c7;font-style:normal;font-weight:bold;">(QS. Al-Baqarah: 261)</span></p>
+                    </div>
+                </div>
+                <div id="page-lapor" class="sub-page"><button class="btn-back" onclick="closeSubPage()">← Kembali</button><div class="section-title">⚠️ Lapor Masalah</div><div class="form-group"><label>Pesan / Kendala</label><textarea id="inputLaporan" class="form-control" placeholder="Tuliskan kendala Anda..."></textarea></div><button class="btn-submit" onclick="kirimLaporan()">Kirim Laporan</button></div>
+                <div id="page-versi" class="sub-page"><button class="btn-back" onclick="closeSubPage()">← Kembali</button><div class="section-title">📱 Versi Aplikasi</div><div style="font-size:12px;color:var(--text-muted);line-height:1.8"><div><b>Nama:</b> Donasi Islami Realtime</div><div><b>Versi:</b> 5.0.0 (Clean + Verifikasi Admin)</div><div><b>Pembaruan:</b> OKTOBER 2026</div></div></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getDatabase, ref, push, onValue, update, remove, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const ADMIN_EMAIL = "riorapita251002@gmail.com";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD5arHSpmqrVgaJNdnU6eZ9lOykJPZrzho",
+            authDomain: "al-quran-tafsir-offline.firebaseapp.com",
+            databaseURL: "https://al-quran-tafsir-offline-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "al-quran-tafsir-offline",
+            storageBucket: "al-quran-tafsir-offline.firebasestorage.app",
+            messagingSenderId: "1027988616661",
+            appId: "1:1027988616661:web:c92361a6680ba366c0b95c",
+            measurementId: "G-6N1EVBC3VN"
+        };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        let currentUser = null;
+        let authMode = 'login';
+        let dataDonatur = [];
+
+        window.setAuthMode = function(mode){
+            authMode = mode;
+            document.getElementById('btnModeLogin').classList.toggle('active', mode==='login');
+            document.getElementById('btnModeDaftar').classList.toggle('active', mode==='daftar');
+            document.getElementById('namaGroup').style.display = mode==='daftar'? 'flex' : 'none';
+            document.getElementById('authSubmit').innerText = mode==='daftar'? 'Daftar Akun' : 'Masuk';
+        };
+        window.handleAuth = async function(e){
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value.trim();
+            const pass = document.getElementById('authPassword').value;
+            const nama = document.getElementById('authNama').value.trim();
+            const msg = document.getElementById('authMsg'); msg.innerText=''; msg.style.color='#dc2626';
+            try{
+                if(authMode==='daftar'){
+                    if(!nama){ msg.innerText='Nama wajib diisi dulu bro!'; return; }
+                    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                    await updateProfile(cred.user, { displayName: nama });
+                    msg.style.color='#0e7c4a'; msg.innerText='Akun dibuat! Masuk...';
+                } else {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                    msg.style.color='#0e7c4a'; msg.innerText='Login berhasil! Masuk ke dashboard...';
+                }
+            }catch(err){
+                msg.style.color='#dc2626';
+                if(err.code==='auth/email-already-in-use') msg.innerText='Email sudah terdaftar, silakan Masuk.';
+                else if(err.code==='auth/invalid-credential') msg.innerText='Email / password salah.';
+                else if(err.code==='auth/weak-password') msg.innerText='Password terlalu lemah, min 6 karakter.';
+                else if(err.code==='auth/operation-not-allowed') msg.innerText='Aktifkan Email/Password di Firebase Console dulu!';
+                else if(err.code==='auth/unauthorized-domain') msg.innerText='Domain belum diizinkan. Jangan buka dari file://';
+                else msg.innerText='Error: '+err.message;
+            }
+        };
+        window.lupaPassword = async function(){
+            const email = document.getElementById('authEmail').value.trim();
+            if(!email){ alert('Isi email dulu!'); return; }
+            try{ await sendPasswordResetEmail(auth, email); alert('Link reset terkirim ke '+email); }catch(err){ alert('Gagal: '+err.message); }
+        };
+        window.logoutUser = async function(){ await signOut(auth); };
+
+        onAuthStateChanged(auth, (user)=>{
+            currentUser = user;
+            const loginScreen = document.getElementById('loginScreen');
+            const dashboard = document.getElementById('dashboardScreen');
+            if(user){
+                loginScreen.classList.add('hidden');
+                dashboard.classList.remove('hidden');
+                document.getElementById('userWelcome').innerText = 'Assalamu’alaikum, '+(user.displayName||user.email);
+                document.getElementById('inputNama').value = user.displayName||'';
+                const isAdmin = user.email === ADMIN_EMAIL;
+                document.getElementById('adminPanel').classList.toggle('hidden',!isAdmin);
+                renderDonatur();
+            } else {
+                loginScreen.classList.remove('hidden');
+                dashboard.classList.add('hidden');
+            }
+        });
+
+        const donasiRef = ref(db, 'donasi');
+        onValue(donasiRef, (snapshot)=>{
+            dataDonatur = [];
+            snapshot.forEach(child=>{ dataDonatur.push({ id: child.key,...child.val() }); });
+            dataDonatur.sort((a,b)=> (b.timestamp||0) - (a.timestamp||0));
+            updateStats();
+            renderDonatur();
+        }, (error)=>{
+            document.getElementById('donaturContainer').innerHTML = '<p style="text-align:center;color:#dc2626;font-size:12px;padding:20px;">Gagal load Firebase: '+error.message+'</p>';
+        });
+
+        function escapeHtml(t){ return String(t||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+        function isAdmin(){ return currentUser && currentUser.email === ADMIN_EMAIL; }
+        function updateStats(){
+            const verified = dataDonatur.filter(i=>i.status==='terverifikasi');
+            const pending = dataDonatur.filter(i=>i.status!=='terverifikasi');
+            let total = verified.reduce((s,i)=>s+(i.nominal||0),0);
+            document.getElementById('statTotal').innerText='Rp '+total.toLocaleString('id-ID');
+            document.getElementById('statCount').innerText=verified.length;
+            document.getElementById('statPending').innerText='Menunggu verifikasi: '+pending.length;
+        }
+        window.formatRupiah = function(input){ let a=input.value.replace(/[^0-9]/g,''); if(a===''){input.value='';return;} input.value=parseInt(a,10).toLocaleString('id-ID'); };
+        window.copyRek = function(nomor){
+            if(navigator.clipboard && window.isSecureContext){
+                navigator.clipboard.writeText(nomor).then(()=>alert('Nomor '+nomor+' disalin!')).catch(()=>copyFallback(nomor));
+            } else { copyFallback(nomor); }
+        };
+        function copyFallback(nomor){
+            const ta=document.createElement('textarea'); ta.value=nomor; document.body.appendChild(ta); ta.select();
+            try{ document.execCommand('copy'); alert('Nomor '+nomor+' disalin!'); }catch(e){ alert('Nomor: '+nomor+' - salin manual ya'); }
+            document.body.removeChild(ta);
+        }
+        window.renderDonatur = function(){
+            const container=document.getElementById('donaturContainer');
+            const q=(document.getElementById('searchDonatur')?.value||'').toLowerCase();
+            const filtered=dataDonatur.filter(i=>i.status==='terverifikasi' && ((i.nama||'').toLowerCase().includes(q) || (i.alamat||'').toLowerCase().includes(q)));
+            container.innerHTML='';
+            if(filtered.length===0){ container.innerHTML='<p style="text-align:center;color:var(--text-muted);font-size:12px;padding:20px;">Belum ada donatur terverifikasi.</p>'; }
+            filtered.forEach(item=>{
+                const card=document.createElement('div'); card.className='donatur-card';
+                const canDelete = currentUser && (currentUser.uid===item.uid || isAdmin());
+                card.innerHTML=`<div class="donatur-header"><span>${escapeHtml(item.nama)}</span><span class="donatur-nominal">Rp ${(item.nominal||0).toLocaleString('id-ID')}</span></div><div class="donatur-alamat">📍 ${escapeHtml(item.alamat)} • ${item.tanggal||''} <span class="badge badge-verified">Terverifikasi</span></div><div class="donatur-doa">" ${escapeHtml(item.doa)} "</div><div class="donatur-footer"><button class="btn-amin" onclick="aminDonasi('${item.id}')">🤲 Aminkan (${item.amin||0})</button>${canDelete?`<button class="btn-hapus" onclick="hapusDonasi('${item.id}')">Hapus</button>`:''}</div>`;
+                container.appendChild(card);
+            });
+            const pendingContainer=document.getElementById('pendingContainer');
+            if(!pendingContainer) return;
+            if(!isAdmin()){ pendingContainer.innerHTML=''; return; }
+            const pending=dataDonatur.filter(i=>i.status!=='terverifikasi');
+            pendingContainer.innerHTML='';
+            if(pending.length===0){ pendingContainer.innerHTML='<p style="font-size:12px;color:var(--text-muted);">Tidak ada donasi menunggu verifikasi.</p>'; return; }
+            pending.forEach(item=>{
+                const card=document.createElement('div'); card.className='donatur-card';
+                card.style.borderLeft='3px solid #f59e0b';
+                card.innerHTML=`<div class="donatur-header"><span>${escapeHtml(item.nama)}</span><span class="donatur-nominal">Rp ${(item.nominal||0).toLocaleString('id-ID')}</span></div><div class="donatur-alamat">📍 ${escapeHtml(item.alamat)} • ${item.tanggal||''} • ${escapeHtml(item.email||'')} <span class="badge badge-pending">Menunggu</span></div><div class="donatur-doa">" ${escapeHtml(item.doa)} "</div>${item.bukti?`<img src="${item.bukti}" style="width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin-bottom:8px;" onclick="window.open(this.src)">`:`<div style="background:#fef2f2;border:1px dashed #dc2626;color:#dc2626;padding:8px;border-radius:8px;font-size:11px;font-weight:bold;margin-bottom:8px;">⚠️ TIDAK ADA BUKTI TRANSFER</div>`}<div class="donatur-footer"><button class="btn-approve" onclick="verifikasiDonasi('${item.id}')">✅ Verifikasi</button><button class="btn-tolak" onclick="tolakDonasi('${item.id}')">❌ Tolak</button></div>`;
+                pendingContainer.appendChild(card);
+            });
+        };
+        window.aminDonasi = async function(id){ try{ const itemRef = ref(db, 'donasi/'+id); const snap = await get(itemRef); if(snap.exists()){ await update(itemRef, { amin: (snap.val().amin||0)+1 }); } }catch(e){ alert('Gagal aminkan: '+e.message); } };
+        window.hapusDonasi = async function(id){ if(!confirm('Hapus donasi ini?')) return; try{ await remove(ref(db, 'donasi/'+id)); }catch(e){ alert('Gagal hapus: '+e.message); } };
+        window.verifikasiDonasi = async function(id){ if(!isAdmin()){ alert('Hanya admin!'); return; } try{ await update(ref(db, 'donasi/'+id), { status: 'terverifikasi' }); alert('Donasi terverifikasi!'); }catch(e){ alert('Gagal verifikasi: '+e.message); } };
+        window.tolakDonasi = async function(id){ if(!isAdmin()){ alert('Hanya admin!'); return; } if(!confirm('Tolak dan hapus donasi ini?')) return; try{ await remove(ref(db, 'donasi/'+id)); }catch(e){ alert('Gagal tolak: '+e.message); } };
+
+        window.submitDonasi = async function(e){
+            e.preventDefault();
+            if(!currentUser){ alert('Login dulu bro!'); return; }
+            const nama=document.getElementById('inputNama').value.trim();
+            const alamat=document.getElementById('inputAlamat').value.trim();
+            const nominal=parseFloat(document.getElementById('inputNominal').value.replace(/[^0-9]/g,''))||0;
+            const doa=document.getElementById('inputDoa').value.trim();
+            if(!nama ||!alamat ||!doa){ alert('Lengkapi semua data!'); return; }
+            if(nominal<10000){ alert('Minimal donasi Rp 10.000!'); return; }
+            const fileInput=document.getElementById('inputBukti');
+            if(!fileInput.files[0]){ alert('Upload bukti transfer dulu!'); return; }
+            const btn=document.getElementById('btnDonasi'); btn.disabled=true; btn.innerText='Mengirim...';
+            const reader=new FileReader();
+            reader.onload=async function(ev){
+                try{
+                    const img=new Image();
+                    img.onload=async function(){
+                        const canvas=document.createElement('canvas');
+                        const scale=Math.min(1,800/img.width);
+                        canvas.width=img.width*scale; canvas.height=img.height*scale;
+                        canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+                        const compressed=canvas.toDataURL('image/jpeg',0.7);
+                        await push(donasiRef, { nama, alamat, nominal, doa, bukti: compressed, status: 'menunggu_verifikasi', amin:0, uid: currentUser.uid, email: currentUser.email, tanggal: new Date().toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}), timestamp: Date.now() });
+                        ['inputAlamat','inputNominal','inputDoa'].forEach(id=>document.getElementById(id).value='');
+                        document.getElementById('inputBukti').value='';
+                        alert('Donasi terkirim! Menunggu verifikasi admin. Jazakallah Khairan!');
+                        btn.disabled=false; btn.innerText='Kirim Donasi & Aminkan Doa';
+                    };
+                    img.src=ev.target.result;
+                }catch(err){ alert('Gagal kirim: '+err.message); btn.disabled=false; btn.innerText='Kirim Donasi & Aminkan Doa'; }
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        };
+        window.kirimLaporan = async function(){
+            let p=document.getElementById('inputLaporan').value.trim();
+            if(!p){ alert('Tulis kendala dulu!'); return; }
+            if(!currentUser){ alert('Login dulu!'); return; }
+            try{ await push(ref(db, 'laporan'), { pesan:p, nama: currentUser.displayName||currentUser.email, email: currentUser.email, uid: currentUser.uid, tanggal: new Date().toISOString(), timestamp: Date.now() }); document.getElementById('inputLaporan').value=''; alert('Laporan terkirim ke Firebase!'); }catch(e){ alert('Gagal: '+e.message); }
+        };
+        window.switchNav = function(tab, btn){ document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active')); btn.classList.add('active'); document.getElementById('tab-'+tab).classList.add('active'); };
+        window.openSubPage = function(page){ document.getElementById('page-main-settings').style.display='none'; document.querySelectorAll('.sub-page').forEach(p=>p.classList.remove('active')); document.getElementById('page-'+page).classList.add('active'); };
+        window.closeSubPage = function(){ document.querySelectorAll('.sub-page').forEach(p=>p.classList.remove('active')); document.getElementById('page-main-settings').style.display='block'; };
+    </script>
+</body>
+</html>
